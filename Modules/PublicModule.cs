@@ -16,6 +16,10 @@ namespace DiscordBotBase.Modules
 {
     public class PublicModule : InteractiveBase<SocketCommandContext>
     {
-
+        [Command("ping")]
+        public async Task PingAsync()
+        {
+            await ReplyAsync($"Pong! `{Context.Client.Latency}ms`");
+        }
     }
 }

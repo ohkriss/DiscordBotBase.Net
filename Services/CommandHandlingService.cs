@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using DiscordBotBase.Entities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
