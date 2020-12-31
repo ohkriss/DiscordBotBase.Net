@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace DiscordBotBase.Logic.Event
+{
+    public enum EventType
+    {
+        Connected,
+        Disconnected,
+        LatencyUpdated,
+        Ready,
+        CurrentUserUpdated,
+        ChannelCreated,
+        ChannelUpdated,
+        ChannelDestroyed,
+        GuildAvailable,
+        GuildMembersDownloaded,
+        GuildMemberUpdated,
+        GuildUnavailable,
+        GuildUpdated,
+        InviteCreated,
+        InviteDeleted,
+        JoinedGuild,
+        LeftGuild,
+        MessageDeleted,
+        MessageReceived,
+        MessagesBulkDeleted,
+        MessageUpdated,
+        ReactionAdded,
+        ReactionRemoved,
+        ReactionsCleared,
+        ReactionsRemovedForEmote,
+        RecipientAdded,
+        RecipientRemoved,
+        RoleCreated,
+        RoleDeleted,
+        RoleUpdated,
+        UserBanned,
+        UserIsTyping,
+        UserJoined,
+        UserLeft,
+        UserUnbanned,
+        UserUpdated,
+        UserVoiceStateUpdated,
+        VoiceServerUpdated,
+        Log,
+        LoggedIn,
+        LoggedOut,
+
+        /*GuildEmojisUpdated,
+        GuildIntegrationsUpdated,
+        GuildMemberAdded,
+        GuildMemberRemoved,
+        MessageAcknowledged,
+        TypingStarted,
+        UserSettingsUpdated,
+        GuildMembersChunked,
+        UnknownEvent,
+        WebhooksUpdated,
+        Heartbeated,
+        CommandExecuted,
+        CommandErrored*/
+    }
+}
