@@ -8,5 +8,6 @@ namespace DiscordBotBase.Entities
     {
         public string Token { get; set; }
         public string Prefix { get; set; }
+        public int ShardCount { get; set; }
     }
 }

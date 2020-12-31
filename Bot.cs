@@ -20,8 +20,9 @@ namespace DiscordBotBase
     {
         public static IServiceProvider Services { get; private set; }
         public Config Config { get; private set; }
-        public DiscordSocketClient Client { get; private set; }
-        public CommandService Command { get; private set; }
+        public List<BotShard> Shards { get; private set; }
+        public CancellationTokenSource CTS { get; private set; }
+
 
         public async Task InitializeAsync(string[] args)
         {
@@ -41,6 +42,12 @@ namespace DiscordBotBase
                     Config.Prefix = Console.ReadLine();
                 }
 
+                if (Config.ShardCount < 1)
+                {
+                    Console.Write("Shard Count > ");
+                    Config.ShardCount = int.Parse(Console.ReadLine());
+                }
+
                 File.WriteAllText("Config.json", JsonSerializer.Serialize(Config, new() { WriteIndented = true }));
             }
             else
@@ -51,48 +58,37 @@ namespace DiscordBotBase
                 Console.Write("Command Prefix > ");
                 Config.Prefix = Console.ReadLine();
 
+                Console.Write("Shard Count > ");
+                Config.ShardCount = int.Parse(Console.ReadLine());
+
                 File.WriteAllText("Config.json", JsonSerializer.Serialize(Config, new() { WriteIndented = true }));
             }
 
-            Command = new(new()
-            {
-                LogLevel = LogSeverity.Debug,
-                DefaultRunMode = RunMode.Async
-            });
+            Shards = new List<BotShard>();
 
-            Client = new(new() { LogLevel = LogSeverity.Error, MessageCacheSize = 4096 });
-            Client.Ready += async () =>
+            for (var i = 0; i < Config.ShardCount; i++)
             {
-                Console.WriteLine("Successfully logged in!");
+                var shard = new BotShard(Config, i, this);
+                shard.Initialize();
+                Shards.Add(shard);
+            }
 
-                await Client.SetStatusAsync(UserStatus.DoNotDisturb);
-            };
 
-            Services = BuildServices();
-            Services.GetRequiredService<CommandService>().Log += async (log) =>
-            {
-                await Console.Out.WriteLineAsync(log.Message);
-            };
+            foreach (var shard in Shards)
+                await shard.RunAsync();
+
+            CTS = new CancellationTokenSource();
+
+            var token = CTS.Token;
 
             try
             {
-                await Client.LoginAsync(TokenType.Bot, Config.Token, false);
-                await Client.StartAsync();
-
-                await Services.GetRequiredService<CommandHandlingService>().InitializeAsync();
+                await Task.Delay(Timeout.Infinite, token);
             }
-            catch (HttpException e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            catch (TaskCanceledException) { }
 
-            await Task.Delay(Timeout.Infinite);
+            foreach (var shard in Shards)
+                await shard.DisconnectAndDispose();
         }
-
-        private ServiceProvider BuildServices()
-            => new ServiceCollection()
-            .AddSingleton<CommandHandlingService>()
-            .AddSingleton<InteractiveService>()
-            .BuildServiceProvider();
     }
 }
