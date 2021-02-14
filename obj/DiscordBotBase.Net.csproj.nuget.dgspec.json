@@ -1,21 +1,18 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\DiscordBotBase.Net.csproj": {}
+    "F:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\DiscordBotBase.Net.csproj": {}
   },
   "projects": {
-    "E:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\DiscordBotBase.Net.csproj": {
+    "F:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\DiscordBotBase.Net.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\DiscordBotBase.Net.csproj",
+        "projectUniqueName": "F:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\DiscordBotBase.Net.csproj",
         "projectName": "DiscordBotBase.Net",
-        "projectPath": "E:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\DiscordBotBase.Net.csproj",
+        "projectPath": "F:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\DiscordBotBase.Net.csproj",
         "packagesPath": "C:\\Users\\km00\\.nuget\\packages\\",
-        "outputPath": "E:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\obj\\",
+        "outputPath": "F:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
           "C:\\Users\\km00\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -42,6 +39,36 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Discord.Addons.Interactive": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "Discord.Net": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Discord.Net.Commands": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Discord.Net.Core": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Discord.Net.Rest": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Discord.Net.WebSocket": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0-preview.1.21102.12, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -57,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }

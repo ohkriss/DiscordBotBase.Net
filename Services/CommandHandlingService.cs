@@ -34,7 +34,6 @@ namespace DiscordBotBase.Services
         {
             if (rawMessage is not SocketUserMessage message) return;
             if (message.Source != MessageSource.User) return;
-            if (!message.Author.Id.Equals(_discord.CurrentUser.Id)) return;
 
             int argPos = 0;
 
@@ -43,18 +42,16 @@ namespace DiscordBotBase.Services
 
             // Need a prefix resolver
             var context = new SocketCommandContext(_discord, message);
-            await _commands.ExecuteAsync(context, argPos, _services).ConfigureAwait(false);
+            await _commands.ExecuteAsync(context, argPos, _services);
         }
 
         private async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
-            if (!command.IsSpecified)
-                return;
+            if (!command.IsSpecified) return;
 
-            if (result.IsSuccess)
-                return;
+            if (result.IsSuccess) return;
 
-            await Console.Out.WriteLineAsync($"Error: {result}").ConfigureAwait(false);
+            await Console.Out.WriteLineAsync($"Error: {result}");
         }
     }
 }

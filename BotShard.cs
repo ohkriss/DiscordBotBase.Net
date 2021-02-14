@@ -1,4 +1,7 @@
-﻿using Discord;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using Discord;
 using Discord.Addons.Interactive;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -6,30 +9,24 @@ using DiscordBotBase.Entities;
 using DiscordBotBase.Logic.Event;
 using DiscordBotBase.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DiscordBotBase
 {
     public class BotShard
     {
+        private readonly int _shardId;
+
+        public readonly Config Config;
+        public readonly Bot Parent;
+
         public static IServiceProvider Services { get; private set; }
-
-        public int ShardId { get; private set; }
-
         public DiscordSocketClient Client { get; private set; }
         public CommandService Command { get; private set; }
-        public Config Config { get; }
-
-        public Bot Parent;
 
         public BotShard(Config config, int id, Bot bot)
         {
             Config = config;
-            ShardId = id;
+            _shardId = id;
             Parent = bot;
         }
 
@@ -39,7 +36,7 @@ namespace DiscordBotBase
             {
                 LogLevel = LogSeverity.Debug,
                 TotalShards = Config.ShardCount,
-                ShardId = ShardId,
+                ShardId = _shardId,
                 MessageCacheSize = 2048
             });
 
