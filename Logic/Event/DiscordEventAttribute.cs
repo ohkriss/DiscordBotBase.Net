@@ -42,18 +42,21 @@ namespace DiscordBotBase.Logic.Event
                 return Task.CompletedTask;
             }
 
-            Task OnEventWithArg(object s)
+            Task OnEventWithArgs(params object[] args)
             {
                 _ = Task.Run(async () =>
                 {
+                    var parameters = new object[] { bot, client };
+                    foreach (var a in args)
+                        parameters.Append(a);
                     try
                     {
                         if (listener.Method.IsStatic)
-                            await (Task)listener.Method.Invoke(null, new object[] { bot, client, s });
+                            await (Task)listener.Method.Invoke(null, parameters);
                         else
                         {
                             var instance = Activator.CreateInstance(listener.Type);
-                            await (Task)listener.Method.Invoke(instance, new object[] { bot, client, s });
+                            await (Task)listener.Method.Invoke(instance, parameters);
                         }
                     }
                     catch (Exception ex)
@@ -64,55 +67,7 @@ namespace DiscordBotBase.Logic.Event
                 });
 
                 return Task.CompletedTask;
-            }
-
-            Task OnEventWithTwoArgs(object s, object e)
-            {
-                _ = Task.Run(async () =>
-                {
-                    try
-                    {
-                        if (listener.Method.IsStatic)
-                            await (Task)listener.Method.Invoke(null, new object[] { bot, client, s, e });
-                        else
-                        {
-                            var instance = Activator.CreateInstance(listener.Type);
-                            await (Task)listener.Method.Invoke(instance, new object[] { bot, client, s, e });
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"[EventListener] Uncaught exception in thread >> {ex.Message} >> {ex.StackTrace}");
-                        Debug.WriteLine($"[EventListener] Uncaught exception in thread >> {ex.Message} >> {ex.StackTrace}");
-                    }
-                });
-
-                return Task.CompletedTask;
-            }
-
-            Task OnEventWithThreeArgs(object s, object e1, object e2)
-            {
-                _ = Task.Run(async () =>
-                {
-                    try
-                    {
-                        if (listener.Method.IsStatic)
-                            await (Task)listener.Method.Invoke(null, new object[] { bot, client, s, e1, e2 });
-                        else
-                        {
-                            var instance = Activator.CreateInstance(listener.Type);
-                            await (Task)listener.Method.Invoke(instance, new object[] { bot, client, s, e1, e2 });
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"[EventListener] Uncaught exception in thread >> {ex.Message} >> {ex.StackTrace}");
-                        Debug.WriteLine($"[EventListener] Uncaught exception in thread >> {ex.Message} >> {ex.StackTrace}");
-                    }
-                });
-
-                return Task.CompletedTask;
-            }
+            }           
 
             switch (Target)
             {
@@ -124,120 +79,146 @@ namespace DiscordBotBase.Logic.Event
                     break;
                 case EventType.LatencyUpdated:
                     client.LatencyUpdated += (b, a)
-                        => OnEventWithTwoArgs(b, a);
+                        => OnEventWithArgs(b, a);
                     break;
                 case EventType.Ready:
                     client.Ready += OnEvent;
                     break;
                 case EventType.CurrentUserUpdated:
-                    client.CurrentUserUpdated += OnEventWithTwoArgs;
+                    client.CurrentUserUpdated += (b, a) 
+                        => OnEventWithArgs(b, a);
                     break;
                 case EventType.ChannelCreated:
-                    client.ChannelCreated += OnEventWithArg;
+                    client.ChannelCreated += (c) 
+                        => OnEventWithArgs(c);
                     break;
                 case EventType.ChannelUpdated:
-                    client.ChannelUpdated += OnEventWithTwoArgs;
+                    client.ChannelUpdated += (b, a)
+                        => OnEventWithArgs(b, a); 
                     break;
                 case EventType.ChannelDestroyed:
-                    client.ChannelDestroyed += OnEventWithArg;
+                    client.ChannelDestroyed += (c)
+                        => OnEventWithArgs(c); 
                     break;
                 case EventType.GuildAvailable:
-                    client.GuildAvailable += OnEventWithArg;
+                    client.GuildAvailable += (g)
+                        => OnEventWithArgs(g); 
                     break;
                 case EventType.GuildMembersDownloaded:
-                    client.GuildMembersDownloaded += OnEventWithArg;
+                    client.GuildMembersDownloaded += (g)
+                        => OnEventWithArgs(g); 
                     break;
                 case EventType.GuildMemberUpdated:
-                    client.GuildMemberUpdated += OnEventWithTwoArgs;
+                    client.GuildMemberUpdated += (b, a)
+                        => OnEventWithArgs(b, a);
                     break;
                 case EventType.GuildUnavailable:
-                    client.GuildUnavailable += OnEventWithArg;
+                    client.GuildUnavailable += (g)
+                        => OnEventWithArgs(g);
                     break;
                 case EventType.GuildUpdated:
-                    client.GuildUpdated += OnEventWithTwoArgs;
+                    client.GuildUpdated += (b, a)
+                        => OnEventWithArgs(b, a);
                     break;
                 case EventType.InviteCreated:
-                    client.InviteCreated += OnEventWithArg;
+                    client.InviteCreated += (i)
+                        => OnEventWithArgs(i);
                     break;
                 case EventType.InviteDeleted:
-                    client.InviteDeleted += OnEventWithTwoArgs;
+                    client.InviteDeleted += (c, i) 
+                        => OnEventWithArgs(c, i);
                     break;
                 case EventType.JoinedGuild:
-                    client.JoinedGuild += OnEventWithArg;
+                    client.JoinedGuild += (g)
+                        => OnEventWithArgs(g);
                     break;
                 case EventType.LeftGuild:
-                    client.LeftGuild += OnEventWithArg;
+                    client.LeftGuild += (g)
+                        => OnEventWithArgs(g);
                     break;
                 case EventType.MessageDeleted:
                     client.MessageDeleted += (m, c)
-                        => OnEventWithTwoArgs(m, c);
+                        => OnEventWithArgs(m, c);
                     break;
                 case EventType.MessageReceived:
-                    client.MessageReceived += OnEventWithArg;
+                    client.MessageReceived += (m)
+                        => OnEventWithArgs(m);
                     break;
                 case EventType.MessageUpdated:
                     client.MessageUpdated += (b, a, c)
-                        => OnEventWithThreeArgs(b, a, c);
+                        => OnEventWithArgs(b, a, c);
                     break;
                 case EventType.ReactionAdded:
                     client.ReactionAdded += (m, c, r)
-                        => OnEventWithThreeArgs(m, c, r);
+                        => OnEventWithArgs(m, c, r);
                     break;
                 case EventType.ReactionRemoved:
                     client.ReactionRemoved += (m, c, r)
-                        => OnEventWithThreeArgs(m, c, r);
+                        => OnEventWithArgs(m, c, r);
                     break;
                 case EventType.ReactionsCleared:
                     client.ReactionsCleared += (m, c)
-                        => OnEventWithTwoArgs(m, c);
+                        => OnEventWithArgs(m, c);
                     break;
                 case EventType.ReactionsRemovedForEmote:
                     client.ReactionsRemovedForEmote += (m, c, e)
-                        => OnEventWithThreeArgs(m, c, e);
+                        => OnEventWithArgs(m, c, e);
                     break;
                 case EventType.RecipientAdded:
-                    client.RecipientAdded += OnEventWithArg;
+                    client.RecipientAdded += (u)
+                        => OnEventWithArgs(u);
                     break;
                 case EventType.RecipientRemoved:
-                    client.RecipientRemoved += OnEventWithArg;
+                    client.RecipientRemoved += (u)
+                        => OnEventWithArgs(u);
                     break;
                 case EventType.RoleCreated:
-                    client.RoleCreated += OnEventWithArg;
+                    client.RoleCreated += (r)
+                        => OnEventWithArgs(r);
                     break;
                 case EventType.RoleDeleted:
-                    client.RoleDeleted += OnEventWithArg;
+                    client.RoleDeleted += (r)
+                        => OnEventWithArgs(r);
                     break;
                 case EventType.RoleUpdated:
-                    client.RoleUpdated += OnEventWithTwoArgs;
+                    client.RoleUpdated += (b, a)
+                        => OnEventWithArgs(b, a);
                     break;
                 case EventType.UserBanned:
-                    client.UserBanned += OnEventWithTwoArgs;
+                    client.UserBanned += (u, g) 
+                        => OnEventWithArgs(u, g);
                     break;
                 case EventType.UserIsTyping:
-                    client.UserIsTyping += OnEventWithTwoArgs;
+                    client.UserIsTyping += (u, c)
+                        => OnEventWithArgs(u, c);
                     break;
                 case EventType.UserJoined:
-                    client.UserJoined += OnEventWithArg;
+                    client.UserJoined += (u)
+                        => OnEventWithArgs(u);
                     break;
                 case EventType.UserLeft:
-                    client.UserLeft += OnEventWithArg;
+                    client.UserLeft += (u)
+                        => OnEventWithArgs(u);
                     break;
                 case EventType.UserUnbanned:
-                    client.UserUnbanned += OnEventWithTwoArgs;
+                    client.UserUnbanned += (u, g)
+                        => OnEventWithArgs(u, g);
                     break;
                 case EventType.UserUpdated:
-                    client.UserUpdated += OnEventWithTwoArgs;
+                    client.UserUpdated += (b, a)
+                        => OnEventWithArgs(b, a);
                     break;
                 case EventType.UserVoiceStateUpdated:
                     client.UserVoiceStateUpdated += (u, b, a)
-                        => OnEventWithThreeArgs(u, b, a);
+                        => OnEventWithArgs(u, b, a);
                     break;
                 case EventType.VoiceServerUpdated:
-                    client.VoiceServerUpdated += OnEventWithArg;
+                    client.VoiceServerUpdated += (v)
+                        => OnEventWithArgs(v);
                     break;
                 case EventType.Log:
                     client.Log += (m)
-                        => OnEventWithArg(m);
+                        => OnEventWithArgs(m);
                     break;
                 case EventType.LoggedIn:
                     client.LoggedIn += OnEvent;

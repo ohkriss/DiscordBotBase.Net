@@ -40,7 +40,6 @@ namespace DiscordBotBase.Services
             if (!(message.HasStringPrefix(_config.Prefix, ref argPos) ||
                 message.HasMentionPrefix(_discord.CurrentUser, ref argPos))) return;
 
-            // Need a prefix resolver
             var context = new SocketCommandContext(_discord, message);
             await _commands.ExecuteAsync(context, argPos, _services);
         }

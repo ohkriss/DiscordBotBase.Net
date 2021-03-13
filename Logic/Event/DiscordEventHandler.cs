@@ -10,7 +10,7 @@ namespace DiscordBotBase.Logic.Event
 {
     public class DiscordEventHandler
     {
-        public static IEnumerable<ListenerMethod> ListenerMethods { get; private set; }
+        private static IEnumerable<ListenerMethod> ListenerMethods { get; set; }
 
         public static void InstallListeners(DiscordSocketClient client, BotShard bot)
         {

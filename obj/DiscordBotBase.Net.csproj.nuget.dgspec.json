@@ -13,8 +13,12 @@
         "packagesPath": "C:\\Users\\km00\\.nuget\\packages\\",
         "outputPath": "F:\\Github\\DiscordBotBase.Net\\DiscordBotBase.Net\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "F:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
           "C:\\Users\\km00\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -46,27 +50,27 @@
             },
             "Discord.Net": {
               "target": "Package",
-              "version": "[2.3.0, )"
+              "version": "[2.3.1, )"
             },
             "Discord.Net.Commands": {
               "target": "Package",
-              "version": "[2.3.0, )"
+              "version": "[2.3.1, )"
             },
             "Discord.Net.Core": {
               "target": "Package",
-              "version": "[2.3.0, )"
+              "version": "[2.3.1, )"
             },
             "Discord.Net.Rest": {
               "target": "Package",
-              "version": "[2.3.0, )"
+              "version": "[2.3.1, )"
             },
             "Discord.Net.WebSocket": {
               "target": "Package",
-              "version": "[2.3.0, )"
+              "version": "[2.3.1, )"
             },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[6.0.0-preview.1.21102.12, )"
+              "version": "[6.0.0-preview.2.21154.6, )"
             }
           },
           "imports": [
@@ -84,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
